@@ -16,6 +16,9 @@ export default function FilterProducts() {
       setSliderValues(value);
     }
   };
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   const onChange: CheckboxProps["onChange"] = (e) => {
     console.log(`checked = ${e.target.checked}`);
@@ -209,9 +212,10 @@ export default function FilterProducts() {
               );
             })}
         </div>
-        <button className="add_more" onClick={getMoreProducts}>
-          ნახე მეტი
-        </button>
+        <div className="add_more">
+          <button onClick={getMoreProducts}>ნახე მეტი</button>
+          <button onClick={scrollToTop}>Scroll on Top</button>
+        </div>
       </div>
     </SFilterPoructs>
   );

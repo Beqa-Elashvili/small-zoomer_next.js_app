@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SFilterPoructs = styled.div`
   display: flex;
   gap: 40px;
-  padding: 40px 140px 70px 140px;
+  padding: 40px 140px 0px 140px;
   .left {
     width: 350px;
     display: flex;
@@ -89,17 +89,24 @@ export const SFilterPoructs = styled.div`
     }
   }
   .main {
-    display: flex;
-    flex-direction: column;
     .add_more {
       margin: auto;
-      margin-top: 30px;
-      text-align: center;
-      border: none;
-
-      border-radius: 90px;
-      padding: 12px 22px 12px 22px;
-      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 12px;
+      button {
+        margin-top: 30px;
+        text-align: center;
+        border: none;
+        border-radius: 90px;
+        padding: 12px 40px 12px 40px;
+        font-weight: 600;
+        cursor: pointer;
+        &:hover {
+          background-color: gray;
+        }
+      }
     }
   }
   .products {
