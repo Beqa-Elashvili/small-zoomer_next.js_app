@@ -28,17 +28,26 @@ export default function FilterProducts() {
           </button>
         </div>
         <div className="line" />
-        <div className="slider">
-          <h4>ფასი</h4>
-          <img src="/icons/arrow-up.png" alt="error" />
+        <div className="sliders">
+          <div className="slider">
+            <h4>ფასი</h4>
+            <img src="/icons/arrow-up.png" alt="error" />
+          </div>
+          <div className="slid">
+            <Slider
+              max={10000}
+              range={{ draggableTrack: true }}
+              defaultValue={[3000, 7000]}
+              onChange={handleSlidervalues}
+              value={SliderValues}
+            />
+            <img
+              className="sensor"
+              src="/icons/price-slider.png"
+              alt="sensor"
+            />
+          </div>
         </div>
-        <Slider
-          max={10000}
-          range={{ draggableTrack: true }}
-          defaultValue={[3000, 7000]}
-          onChange={handleSlidervalues}
-          value={SliderValues}
-        />
         <div className="sliderValues">
           <div>
             MIN <p>{SliderValues[0]}</p>
@@ -132,7 +141,6 @@ export default function FilterProducts() {
           </div>
         </div>
       </div>
-
       <div>this is products</div>
     </SFilterPoructs>
   );

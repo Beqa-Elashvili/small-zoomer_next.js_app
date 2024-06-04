@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SFilterPoructs = styled.div`
   display: flex;
   gap: 28px;
-  padding-inline: 140px;
+  padding: 0px 140px 70px 140px;
   .left {
     width: 350px;
     display: flex;
@@ -35,6 +35,22 @@ export const SFilterPoructs = styled.div`
     justify-content: space-between;
     align-items: center;
   }
+  .sliders {
+    position: relative;
+
+    height: 100px;
+    .sensor {
+      position: absolute;
+      top: 24%;
+      right: 20%;
+      left: 31%;
+      z-index: -1;
+    }
+    .slid {
+      margin-top: 43px;
+      z-index: 10;
+    }
+  }
   .sliderValues {
     display: flex;
     justify-content: space-between;
@@ -52,10 +68,6 @@ export const SFilterPoructs = styled.div`
     }
   }
   .filters {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-top: 14px;
     div {
       display: flex;
       gap: 12px;
@@ -65,5 +77,11 @@ export const SFilterPoructs = styled.div`
     display: flex;
     flex-direction: column;
     gap: 22px;
+    p {
+      cursor: pointer;
+    }
+    img {
+      cursor: pointer;
+    }
   }
 `;
