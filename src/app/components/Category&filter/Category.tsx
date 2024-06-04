@@ -1,8 +1,20 @@
 "use client";
 import { Select } from "antd";
 import { SCategory } from "./SCategory";
+import axios from "axios";
+import { useEffect } from "react";
 
 export default function Category() {
+  // async function GetProducts(): Promise<void> {
+  //   const resp = await axios.get(
+  //     "https://zoommer-api.lemon.do/v1/Products/v3?CategoryId=21&Page=1&Limit=12"
+  //   );
+  //   console.log(resp.data);
+  // }
+  // useEffect(() => {
+  //   GetProducts();
+  // }, []);
+
   return (
     <main>
       <SCategory>
