@@ -2,14 +2,13 @@ import styled from "styled-components";
 
 export const SFilterPoructs = styled.div`
   display: flex;
-  gap: 28px;
-  padding: 0px 140px 70px 140px;
+  gap: 40px;
+  padding: 40px 140px 70px 140px;
   .left {
     width: 350px;
     display: flex;
     flex-direction: column;
     gap: 24px;
-    margin-top: 24px;
   }
   .top {
     display: flex;
@@ -54,6 +53,7 @@ export const SFilterPoructs = styled.div`
   .sliderValues {
     display: flex;
     justify-content: space-between;
+    gap: 12px;
     div {
       display: flex;
       justify-content: space-around;
@@ -72,6 +72,10 @@ export const SFilterPoructs = styled.div`
       display: flex;
       gap: 12px;
     }
+    .add {
+      color: #ec5e2a;
+      margin-top: 8px;
+    }
   }
   .fil {
     display: flex;
@@ -82,6 +86,80 @@ export const SFilterPoructs = styled.div`
     }
     img {
       cursor: pointer;
+    }
+  }
+  .main {
+    display: flex;
+    flex-direction: column;
+    .add_more {
+      margin: auto;
+      margin-top: 30px;
+      text-align: center;
+      border: none;
+
+      border-radius: 90px;
+      padding: 12px 22px 12px 22px;
+      font-weight: 600;
+    }
+  }
+  .products {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 40px;
+
+    .first {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      img {
+        height: 170px;
+        object-fit: contain;
+      }
+    }
+    h3 {
+      .icon {
+        height: 14px;
+      }
+    }
+    .name {
+      text-wrap: balance;
+      height: 40px;
+      overflow: hidden;
+      font-size: 14px;
+    }
+    p {
+      font-size: 10px;
+      font-weight: 600;
+      display: flex;
+      gap: 2px;
+      span {
+        color: #ec5e2a;
+      }
+      img {
+        height: 12px;
+      }
+    }
+    .btns {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .btn2 {
+        width: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        background-color: #f28f6a;
+      }
+      button {
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      img {
+        height: 14px;
+      }
     }
   }
 `;

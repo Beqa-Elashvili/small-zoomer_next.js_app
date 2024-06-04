@@ -1,13 +1,12 @@
 "use client";
 import { Slider } from "antd";
 import { SFilterPoructs } from "./SFilterProducts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "antd";
 import type { CheckboxProps } from "antd";
-
-const onChange: CheckboxProps["onChange"] = (e) => {
-  console.log(`checked = ${e.target.checked}`);
-};
+import axios from "axios";
+import { TProducts } from "Types/TProducts";
+import { FaLariSign } from "react-icons/fa6";
 
 export default function FilterProducts() {
   const [SliderValues, setSliderValues] = useState<number[]>([3000, 7000]);
@@ -17,6 +16,38 @@ export default function FilterProducts() {
       setSliderValues(value);
     }
   };
+
+  const onChange: CheckboxProps["onChange"] = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+
+  const [products, setProducts] = useState<TProducts[]>();
+  const [page, setPage] = useState<number>(1);
+
+  async function Getfirstproducts(pages: number) {
+    const resp = await axios.get(
+      ` https://zoommer-api.lemon.do/v1/Products/v3?CategoryId=21&Page=${pages}&Limit=12`
+    );
+    setProducts(resp.data.products);
+  }
+
+  async function GetProducts(pages: number) {
+    const resp = await axios.get(
+      ` https://zoommer-api.lemon.do/v1/Products/v3?CategoryId=21&Page=${pages}&Limit=12`
+    );
+    return resp.data.products;
+  }
+
+  async function getMoreProducts(): Promise<void> {
+    setPage(page + 1);
+    const newProducts = await GetProducts(page);
+    setProducts((prevProducts) => [...(prevProducts || []), ...newProducts]);
+  }
+
+  useEffect(() => {
+    Getfirstproducts(page);
+  }, []);
+
   return (
     <SFilterPoructs>
       <div className="left">
@@ -74,6 +105,7 @@ export default function FilterProducts() {
               <Checkbox onChange={onChange} />
               <p>2020</p>
             </div>
+            <p className="add">მეტის ნახვა</p>
           </div>
           <div className="slider">
             <h4>წონა</h4>
@@ -92,6 +124,7 @@ export default function FilterProducts() {
               <Checkbox onChange={onChange} />
               <p>228</p>
             </div>
+            <p className="add">მეტის ნახვა</p>
           </div>
           <div className="slider">
             <h4>ეკრანის ზომა</h4>
@@ -110,6 +143,7 @@ export default function FilterProducts() {
               <Checkbox onChange={onChange} />
               <p>5.8 inches</p>
             </div>
+            <p className="add">მეტის ნახვა</p>
           </div>
           <div className="slider">
             <h4>სიმ ბარათი-SIM</h4>
@@ -141,7 +175,44 @@ export default function FilterProducts() {
           </div>
         </div>
       </div>
-      <div>this is products</div>
+      <div className="main">
+        <div className="products">
+          {products &&
+            products.length > 0 &&
+            products.map((item: TProducts) => {
+              return (
+                <div key={item.id} className="first">
+                  <img src={item.imageUrl} alt="products_img" />
+                  <h3>
+                    {item.price} <FaLariSign className="icon" />
+                  </h3>
+                  <p>
+                    თვეში:
+                    <span>
+                      63 <FaLariSign />
+                    </span>
+                    -დან
+                  </p>
+                  <p className="name">
+                    {item.name.split(" ").slice(0, 7).join(" ")}
+                  </p>
+                  <div className="btns">
+                    <button>
+                      <img src="/icons/arrow-swap.png" alt="arrow_swap" />
+                    </button>
+                    <button className="btn2">
+                      <img src="/icons/shopping-cart.png" alt="" />
+                      დამატება
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+        <button className="add_more" onClick={getMoreProducts}>
+          ნახე მეტი
+        </button>
+      </div>
     </SFilterPoructs>
   );
 }

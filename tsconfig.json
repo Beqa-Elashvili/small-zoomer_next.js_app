@@ -16,6 +16,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",         
+    "paths": {
+      "@src/*": ["src/*"]
+    },
     "plugins": [
       {
         "name": "typescript-plugin-css-modules"
@@ -23,12 +27,7 @@
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+    ]
   },
   "include": [
     "next-env.d.ts",
