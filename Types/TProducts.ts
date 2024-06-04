@@ -83,3 +83,12 @@ export type TProducts = {
   subCategoryName: string | null;
   videoUrls: string[] | null;
 };
+
+export interface IState {
+  minPrice: number;
+  maxPriceRange: number;
+  minPriceRange: number;
+  priceRange: number;
+  priceRangeMax: number;
+  maxPrice: number;
+}

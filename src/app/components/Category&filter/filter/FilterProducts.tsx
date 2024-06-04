@@ -1,21 +1,32 @@
 "use client";
 import { Slider } from "antd";
 import { SFilterPoructs } from "./SFilterProducts";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Checkbox } from "antd";
 import type { CheckboxProps } from "antd";
 import axios from "axios";
 import { TProducts } from "Types/TProducts";
 import { FaLariSign } from "react-icons/fa6";
+import { IState } from "Types/TProducts";
+import { log } from "console";
 
 export default function FilterProducts() {
   const [SliderValues, setSliderValues] = useState<number[]>([3000, 7000]);
+  const [state, setState] = useState<Partial<IState>>({});
 
   const handleSlidervalues = (value: number | number[]) => {
     if (Array.isArray(value)) {
       setSliderValues(value);
+      const min = SliderValues[0];
+      const max = SliderValues[1];
+      setState((e) => ({
+        ...e,
+        minPrice: min,
+        maxPrice: max,
+      }));
     }
   };
+
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -47,8 +58,21 @@ export default function FilterProducts() {
     setProducts((prevProducts) => [...(prevProducts || []), ...newProducts]);
   }
 
+  const Filter = useCallback(async () => {
+    const resp = await axios.get(
+      "https://zoommer-api.lemon.do/v1/Products/v3?CategoryId=21&minPrice=10000"
+    );
+    console.log("გაეშვა");
+    setProducts(resp.data.products);
+  }, [SliderValues[0], SliderValues[1]]);
+
   useEffect(() => {
-    Getfirstproducts(page);
+    if (SliderValues[0] === 3000 || SliderValues[1] === 7000) {
+      Getfirstproducts(page);
+      return;
+    } else {
+      Filter();
+    }
   }, []);
 
   return (
