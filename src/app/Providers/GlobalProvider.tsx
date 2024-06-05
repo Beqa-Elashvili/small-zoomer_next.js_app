@@ -18,25 +18,29 @@ interface TGlobalContext {
   setProducts: Dispatch<SetStateAction<TProducts[]>>;
   state: Partial<IState>;
   setState: Dispatch<SetStateAction<Partial<IState>>>;
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
   Selectvalue: string;
   setSelectValue: Dispatch<SetStateAction<string>>;
   SearchResult: TProducts[];
   setSearchResult: Dispatch<SetStateAction<TProducts[]>>;
   inputValue: string;
   setInputValue: Dispatch<SetStateAction<string>>;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
 }
 
 export const GlobalContext = createContext<TGlobalContext>({
+  page: 1,
+  setPage: () => {},
+  inputValue: "",
+  setInputValue: () => {},
   products: [],
   setProducts: () => {},
-  page: null,
-  setPage: () => {},
   Selectvalue: "",
   setSelectValue: () => {},
   SearchResult: [],
   setSearchResult: () => {},
+  state: {},
+  setState: () => {},
 });
 
 export const useGlobalContext = (): TGlobalContext => {
@@ -50,10 +54,10 @@ export const useGlobalContext = (): TGlobalContext => {
 export function GlobalProvider({ children }: PropsWithChildren<{}>) {
   const [products, setProducts] = useState<TProducts[]>([]);
   const [state, setState] = useState<Partial<IState>>({});
-  const [page, setPage] = useState<number>(1);
   const [Selectvalue, setSelectValue] = useState<string>("სორტირება");
   const [SearchResult, setSearchResult] = useState<TProducts[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     async function GetSearchProducts() {

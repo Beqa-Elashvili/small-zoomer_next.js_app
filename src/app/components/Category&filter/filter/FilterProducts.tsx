@@ -102,8 +102,6 @@ export default function FilterProducts() {
     console.log(`checked = ${e.target.checked}`);
   };
 
-  const [sortStyle, setSortStyle] = useState<boolean>(false);
-
   return (
     <SFilterPoructs>
       <div className="left">
