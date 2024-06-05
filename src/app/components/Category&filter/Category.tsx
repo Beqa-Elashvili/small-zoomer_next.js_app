@@ -1,31 +1,29 @@
 "use client";
 import { Select } from "antd";
 import { SCategory } from "./SCategory";
-import axios from "axios";
-import { useEffect } from "react";
+import { useGlobalContext } from "@src/app/Providers/GlobalProvider";
 
 export default function Category() {
-  // async function GetProducts(): Promise<void> {
-  //   const resp = await axios.get(
-  //     "https://zoommer-api.lemon.do/v1/Products/v3?CategoryId=21&Page=1&Limit=12"
-  //   );
-  //   console.log(resp.data);
-  // }
-  // useEffect(() => {
-  //   GetProducts();
-  // }, []);
-
+  const { Selectvalue, setSelectValue } = useGlobalContext();
   return (
     <main>
       <SCategory>
         <div className="main">
           <div className="left">
-            <img className="arrow-left" src="/icons/arrow.png" alt="" />
-            <img src="/icons/apple.png" alt="" />
+            <img
+              className="arrow-left"
+              src="/icons/arrow.png"
+              alt="arrow-left-img"
+            />
+            <img src="/icons/apple.png" alt="apple-icon" />
             <h4>Apple</h4>
           </div>
           <div className="right">
-            <Select className="" defaultValue={"დალაგება"}>
+            <Select 
+              value={Selectvalue}
+              onChange={(e) => setSelectValue(e)}
+              defaultValue={"დალაგება"}
+            >
               <Select.Option value="პოპულარული">პოპულარული</Select.Option>
               <Select.Option value="ფასი: კლებადობით">
                 ფასი: კლებადობით

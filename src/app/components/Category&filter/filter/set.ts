@@ -1,6 +1,3 @@
-// Sandro Gamrekelashvili
-// 18:52
-
 // interface IState {
 //   minPrice: number | undefined;
 //   maxPrice: number | undefined;
@@ -24,6 +21,6 @@
 
 // useEffect(() => {
 //   if (Object.keys(state).length === 0){
-//     requst(`hasdasd:asdsadasdasd.asdasd/asdasd?page=1`) 
+//     requst(`hasdasd:asdsadasdasd.asdasd/asdasd?page=1`)
 //   }else{
 //     const obasd = objectToURLQuery

@@ -85,10 +85,5 @@ export type TProducts = {
 };
 
 export interface IState {
-  minPrice: number;
-  maxPriceRange: number;
-  minPriceRange: number;
-  priceRange: number;
-  priceRangeMax: number;
-  maxPrice: number;
+  minMaxPrices?: number[];
 }

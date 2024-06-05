@@ -1,33 +1,94 @@
 "use client";
 import { Slider } from "antd";
 import { SFilterPoructs } from "./SFilterProducts";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import { Checkbox } from "antd";
 import type { CheckboxProps } from "antd";
 import axios from "axios";
 import { TProducts } from "Types/TProducts";
 import { FaLariSign } from "react-icons/fa6";
-import { IState } from "Types/TProducts";
-import { log } from "console";
+import { useGlobalContext } from "@src/app/Providers/GlobalProvider";
+import { useCallback, useEffect } from "react";
+import useGetProductURL from "@src/app/Hooks/FilterUrlHook";
 
 export default function FilterProducts() {
-  const [SliderValues, setSliderValues] = useState<number[]>([3000, 7000]);
-  const [state, setState] = useState<Partial<IState>>({});
+  const {
+    products,
+    setProducts,
+    page,
+    setPage,
+    state,
+    setState,
+    Selectvalue,
+    setSelectValue,
+  } = useGlobalContext();
+
+  const { getProductUrl } = useGetProductURL();
 
   const handleSlidervalues = (value: number | number[]) => {
     if (Array.isArray(value)) {
-      setSliderValues(value);
-      const min = SliderValues[0];
-      const max = SliderValues[1];
       setState((e) => ({
         ...e,
-        minPrice: min,
-        maxPrice: max,
+        minMaxPrices: value,
       }));
     }
   };
 
-  function scrollToTop() {
+  const fetchProducts = async (page: number) => {
+    try {
+      const url = getProductUrl(page, Selectvalue, state.minMaxPrices);
+      const response = await axios.get(url);
+      return response.data.products;
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  const getMoreProducts = async () => {
+    try {
+      const newPage = page + 1;
+      setPage(newPage);
+      const newProducts = await fetchProducts(newPage);
+      setProducts((prev) => [...(prev || []), ...newProducts]);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(state).length === 0) {
+      const fetchInitialProducts = async () => {
+        const initialProducts = await fetchProducts(1);
+        setProducts(initialProducts);
+      };
+      fetchInitialProducts();
+    } else {
+      setPage(1);
+      const getFilteredProducts = async () => {
+        const filteredProducts = await fetchProducts(1);
+        setProducts(filteredProducts);
+      };
+      const timeout = setTimeout(getFilteredProducts, 300);
+      return () => clearTimeout(timeout);
+    }
+  }, [state]);
+
+  const handleSelectValue = useCallback(async () => {
+    setPage(1);
+    const newProducts = await fetchProducts(1);
+    setProducts(newProducts);
+  }, [Selectvalue]);
+
+  useEffect(() => {
+    handleSelectValue();
+  }, [Selectvalue]);
+
+  const hanldeClearFilters = async () => {
+    setPage(1);
+    setState({});
+    setSelectValue("დალაგება");
+  };
+
+  function scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -35,52 +96,12 @@ export default function FilterProducts() {
     console.log(`checked = ${e.target.checked}`);
   };
 
-  const [products, setProducts] = useState<TProducts[]>();
-  const [page, setPage] = useState<number>(1);
-
-  async function Getfirstproducts(pages: number) {
-    const resp = await axios.get(
-      ` https://zoommer-api.lemon.do/v1/Products/v3?CategoryId=21&Page=${pages}&Limit=12`
-    );
-    setProducts(resp.data.products);
-  }
-
-  async function GetProducts(pages: number) {
-    const resp = await axios.get(
-      ` https://zoommer-api.lemon.do/v1/Products/v3?CategoryId=21&Page=${pages}&Limit=12`
-    );
-    return resp.data.products;
-  }
-
-  async function getMoreProducts(): Promise<void> {
-    setPage(page + 1);
-    const newProducts = await GetProducts(page);
-    setProducts((prevProducts) => [...(prevProducts || []), ...newProducts]);
-  }
-
-  const Filter = useCallback(async () => {
-    const resp = await axios.get(
-      "https://zoommer-api.lemon.do/v1/Products/v3?CategoryId=21&minPrice=10000"
-    );
-    console.log("გაეშვა");
-    setProducts(resp.data.products);
-  }, [SliderValues[0], SliderValues[1]]);
-
-  useEffect(() => {
-    if (SliderValues[0] === 3000 || SliderValues[1] === 7000) {
-      Getfirstproducts(page);
-      return;
-    } else {
-      Filter();
-    }
-  }, []);
-
   return (
     <SFilterPoructs>
       <div className="left">
         <div className="top">
           <h4>ფილტრი</h4>
-          <button>
+          <button onClick={hanldeClearFilters}>
             <img src="/icons/box.png" alt="box" />
             გასუფთავება
           </button>
@@ -93,11 +114,11 @@ export default function FilterProducts() {
           </div>
           <div className="slid">
             <Slider
-              max={10000}
+              max={25000}
               range={{ draggableTrack: true }}
-              defaultValue={[3000, 7000]}
+              defaultValue={[0, 7000]}
               onChange={handleSlidervalues}
-              value={SliderValues}
+              value={state.minMaxPrices}
             />
             <img
               className="sensor"
@@ -108,10 +129,20 @@ export default function FilterProducts() {
         </div>
         <div className="sliderValues">
           <div>
-            MIN <p>{SliderValues[0]}</p>
+            MIN
+            <p>
+              {state.minMaxPrices?.length !== undefined
+                ? state.minMaxPrices[0]
+                : 0}
+            </p>
           </div>
           <div>
-            MAX <p>{SliderValues[1]}</p>
+            MAX
+            <p>
+              {state.minMaxPrices?.length !== undefined
+                ? state.minMaxPrices[1]
+                : 0}
+            </p>
           </div>
         </div>
         <div className="fil">
