@@ -51,7 +51,7 @@ export function GlobalProvider({ children }: PropsWithChildren<{}>) {
   const [products, setProducts] = useState<TProducts[]>([]);
   const [state, setState] = useState<Partial<IState>>({});
   const [page, setPage] = useState<number>(1);
-  const [Selectvalue, setSelectValue] = useState<string>("დალაგება");
+  const [Selectvalue, setSelectValue] = useState<string>("სორტირება");
   const [SearchResult, setSearchResult] = useState<TProducts[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
 

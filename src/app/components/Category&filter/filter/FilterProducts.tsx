@@ -7,8 +7,9 @@ import axios from "axios";
 import { TProducts } from "Types/TProducts";
 import { FaLariSign } from "react-icons/fa6";
 import { useGlobalContext } from "@src/app/Providers/GlobalProvider";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useGetProductURL from "@src/app/Hooks/FilterUrlHook";
+import { Spin } from "antd";
 
 export default function FilterProducts() {
   const {
@@ -23,6 +24,7 @@ export default function FilterProducts() {
   } = useGlobalContext();
 
   const { getProductUrl } = useGetProductURL();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSlidervalues = (value: number | number[]) => {
     if (Array.isArray(value)) {
@@ -35,11 +37,15 @@ export default function FilterProducts() {
 
   const fetchProducts = async (page: number) => {
     try {
+      setLoading(true);
       const url = getProductUrl(page, Selectvalue, state.minMaxPrices);
       const response = await axios.get(url);
+      setLoading(false);
       return response.data.products;
     } catch (error) {
       console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,6 +101,8 @@ export default function FilterProducts() {
   const onChange: CheckboxProps["onChange"] = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
+
+  const [sortStyle, setSortStyle] = useState<boolean>(false);
 
   return (
     <SFilterPoructs>
@@ -268,7 +276,9 @@ export default function FilterProducts() {
             })}
         </div>
         <div className="add_more">
-          <button onClick={getMoreProducts}>ნახე მეტი</button>
+          <button onClick={getMoreProducts}>
+            ნახე მეტი {loading && <Spin />}
+          </button>
           <button onClick={scrollToTop}>Scroll on Top</button>
         </div>
       </div>
