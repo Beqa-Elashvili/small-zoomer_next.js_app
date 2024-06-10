@@ -10,6 +10,7 @@ import { useGlobalContext } from "@src/app/Providers/GlobalProvider";
 import { useCallback, useEffect, useState } from "react";
 import useGetProductURL from "@src/app/Hooks/FilterUrlHook";
 import { Spin } from "antd";
+import { unescape } from "querystring";
 
 export default function FilterProducts() {
   const {
@@ -22,7 +23,7 @@ export default function FilterProducts() {
     Selectvalue,
     setSelectValue,
   } = useGlobalContext();
-
+  console.log(Selectvalue);
   const { getProductUrl } = useGetProductURL();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -85,7 +86,9 @@ export default function FilterProducts() {
   }, [Selectvalue]);
 
   useEffect(() => {
-    handleSelectValue();
+    if (Selectvalue !== "სორტირება") {
+      handleSelectValue();
+    }
   }, [Selectvalue]);
 
   const hanldeClearFilters = async () => {
